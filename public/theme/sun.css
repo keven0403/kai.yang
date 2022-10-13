@@ -1,0 +1,14 @@
+:root {
+    /* 主要的 */
+    --child-01-color: blue; 
+    /* 次要的 */
+    --child-02-color: yellow;
+    --child-03-color: red;
+    --child-04-color: white;
+    --child-05-color: black;
+    --child-06-color: green;
+    --child-07-color: gray;
+    --child-08-color: blue;
+
+    --header-bg: var(--child-01-color);
+}
