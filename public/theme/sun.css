@@ -1,14 +1,15 @@
 :root {
     /* 主要的 */
-    --child-01-color: blue; 
+    --child-01-color: #c89292; 
     /* 次要的 */
-    --child-02-color: yellow;
-    --child-03-color: red;
-    --child-04-color: white;
-    --child-05-color: black;
+    --child-02-color: #fff;
+    --child-03-color: #072f73;
+    --child-04-color: #1c4792;
+    --child-05-color: #fff;
     --child-06-color: green;
     --child-07-color: gray;
     --child-08-color: blue;
 
     --header-bg: var(--child-01-color);
+    --header-login-but-bg: var(--child-04-color);
 }

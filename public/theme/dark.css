@@ -1,3 +1,15 @@
 :root {
-    --primary-color: 'red';
+    /* 主要的 */
+    --child-01-color: #24272D; 
+    /* 次要的 */
+    --child-02-color: #fff;
+    --child-03-color: #ACB5C5;
+    --child-04-color: #3AC89F;
+    --child-05-color: #000000;
+    --child-06-color: #030a03;
+    --child-07-color: gray;
+    --child-08-color: blue;
+
+    --header-bg: var(--child-01-color);
+    --header-login-but-bg: var(--child-04-color);
 }
