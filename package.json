@@ -12,6 +12,7 @@
     "@types/styled-components": "^5.1.26",
     "antd": "^4.23.5",
     "axios": "^1.1.2",
+    "echarts-for-react": "^3.0.2",
     "ethers": "^5.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
