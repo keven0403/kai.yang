@@ -18,7 +18,7 @@ interface ProgressInfo {
     percent: number,
     strokeColor: string,
     showInfo: boolean
-    data: number,
+    data: string,
 }
 
 const ComProgress = ({
