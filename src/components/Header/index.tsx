@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import LogoImg from '@/assets/images/logo.png'
 import SwitchTheme from '@/components/SwitchTheme'
+import SwitchLocale from '@/components/SwitchLocale'
 
 const HeaderMainContent = styled.div`
     background-color: var(--header-bg);
@@ -67,6 +68,8 @@ const ComHeader = () => {
                     <div className='item'>Address Filter</div>
 
                     <SwitchTheme />
+
+                    <SwitchLocale />
                 </HeaderListMenu>
 
                 <HeaderLoginBut className='flex-center-content'>Login Via Web3 Wallet</HeaderLoginBut>

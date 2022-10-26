@@ -2,11 +2,13 @@ import { configureStore } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 import { save, load } from 'redux-localstorage-simple' // 将Redux状态保存到LocalStorage或从LocalStorage加载Redux状态
 import loading from './loading/reducer'
+import locale from './locale/reducer'
 
 const PERSISTED_KEYS: string[] = ['']
 
 const rootReducer = combineReducers({
   loading,
+  locale
 })
 
 // 对标准的Redux的createStore函数的抽象封装，包裹createStore （并集成了redux-thunk、Redux DevTools Extension）
