@@ -61,15 +61,15 @@ const ComMenu = () => {
             ],
         },
         {
-            key: '/title3',
+            key: '/force',
             label: (
                 <RouteLink
                     defaultSelectedKeys=''
-                    defaultKey='/title3'
-                    to='/title3'
+                    defaultKey='/force'
+                    to='/force'
                     normalIcon=''
                     activeIcon=''
-                    title='title 3'
+                    title='force'
                     isShowIcon={false}
                 />
             ),
