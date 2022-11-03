@@ -7,9 +7,10 @@
     --child-04-color: #1c4792;
     --child-05-color: #fff;
     --child-06-color: green;
-    --child-07-color: gray;
+    --child-07-color: #ccc;
     --child-08-color: blue;
 
     --header-bg: var(--child-01-color);
     --header-login-but-bg: var(--child-04-color);
+    --toolIconFill: var(--child-07-color);
 }

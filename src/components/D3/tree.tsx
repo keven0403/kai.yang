@@ -2,14 +2,9 @@ import styled from 'styled-components'
 import * as d3 from 'd3'
 import { useEffect, useRef } from 'react'
 
-const MainContent = styled.div`
-    width: 100%;
-    height: 100%;
-`
+const MainContent = styled.div``
 
 const ComD3Force = (props: any) => {
-    const width: number = props.width || 0
-    const height: number = props.height || 0
     const defaultAddress: string = '0x0000000000488b7147b38452e686b41c4fa8bedc'
     const nodes: any[] = [
         {
@@ -107,273 +102,273 @@ const ComD3Force = (props: any) => {
             "assertsMovementTransfersCount": 0, 
             "bothOwnedEnsCount": 1, 
             "light": true
-        },
-        {
-            "source": "0x8ae1713594c61e2b26fef4b03a7a39fa6f296734", 
-            "target": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
-            "type": [
-                "transfer", 
-                "assertsMovement"
-            ], 
-            "edgeIds": [
-                "transfer_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x00ca000000cc8411d52d6045c82c7984033e0000", 
-                "asserts_movement_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x00ca000000cc8411d52d6045c82c7984033e0000"
-            ], 
-            "transferMaxCount": 4, 
-            "transferOverCount": 1, 
-            "gasProviderAmount": 0, 
-            "depositCount": 0, 
-            "crossChainBridgeCount": 0, 
-            "assertsMovementTransfersCount": 1, 
-            "bothOwnedEnsCount": 0, 
-            "light": true
         }, 
-        {
-            "source": "0x6903585ab8630b500417c2af3cbb7394756d6c62", 
-            "target": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
-            "type": [
-                "transfer"
-            ], 
-            "edgeIds": [
-                "transfer_0x6903585ab8630b500417c2af3cbb7394756d6c620x00ca000000cc8411d52d6045c82c7984033e0000"
-            ], 
-            "transferMaxCount": 1, 
-            "transferOverCount": 1, 
-            "gasProviderAmount": 0, 
-            "depositCount": 0, 
-            "crossChainBridgeCount": 0, 
-            "assertsMovementTransfersCount": 0, 
-            "bothOwnedEnsCount": 0, 
-            "light": true
-        }, 
-        {
-            "source": "0x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
-            "target": "0x0000000000488b7147b38452e686b41c4fa8bedc", 
-            "type": [
-                "transfer", 
-                "assertsMovement"
-            ], 
-            "edgeIds": [
-                "transfer_0x629d6688dd4546da8935ee1602be62d92b3c5a7c0x0000000000488b7147b38452e686b41c4fa8bedc", 
-                "asserts_movement_0x629d6688dd4546da8935ee1602be62d92b3c5a7c0x0000000000488b7147b38452e686b41c4fa8bedc"
-            ], 
-            "transferMaxCount": 3, 
-            "transferOverCount": 0, 
-            "gasProviderAmount": 0, 
-            "depositCount": 0, 
-            "crossChainBridgeCount": 0, 
-            "assertsMovementTransfersCount": 3, 
-            "bothOwnedEnsCount": 0, 
-            "light": false
-        }, 
-        {
-            "source": "0x8ae1713594c61e2b26fef4b03a7a39fa6f296734", 
-            "target": "0x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
-            "type": [
-                "transfer", 
-                "ens"
-            ], 
-            "edgeIds": [
-                "transfer_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
-                "ens_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x629d6688dd4546da8935ee1602be62d92b3c5a7c"
-            ], 
-            "transferMaxCount": 77, 
-            "transferOverCount": 26, 
-            "gasProviderAmount": 0, 
-            "depositCount": 0, 
-            "crossChainBridgeCount": 0, 
-            "assertsMovementTransfersCount": 0, 
-            "bothOwnedEnsCount": 14, 
-            "light": false
-        }, 
-        {
-            "source": "0xab5801a7d398351b8be11c439e05c5b3259aec9b", 
-            "target": "0x8ae1713594c61e2b26fef4b03a7a39fa6f296734", 
-            "type": [
-                "transfer"
-            ], 
-            "edgeIds": [
-                "transfer_0xab5801a7d398351b8be11c439e05c5b3259aec9b0x8ae1713594c61e2b26fef4b03a7a39fa6f296734"
-            ], 
-            "transferMaxCount": 1, 
-            "transferOverCount": 0, 
-            "gasProviderAmount": 0, 
-            "depositCount": 0, 
-            "crossChainBridgeCount": 0, 
-            "assertsMovementTransfersCount": 0, 
-            "bothOwnedEnsCount": 0, 
-            "light": false
-        }, 
-        {
-            "source": "0xab5801a7d398351b8be11c439e05c5b3259aec9b", 
-            "target": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
-            "type": [
-                "transfer"
-            ], 
-            "edgeIds": [
-                "transfer_0xab5801a7d398351b8be11c439e05c5b3259aec9b0x00ca000000cc8411d52d6045c82c7984033e0000"
-            ], 
-            "transferMaxCount": 1, 
-            "transferOverCount": 0, 
-            "gasProviderAmount": 0, 
-            "depositCount": 0, 
-            "crossChainBridgeCount": 0, 
-            "assertsMovementTransfersCount": 0, 
-            "bothOwnedEnsCount": 0, 
-            "light": false
-        }, 
-        {
-            "source": "0xa21b4397775ffc198974af3b3040b71012912193", 
-            "target": "0x8ae1713594c61e2b26fef4b03a7a39fa6f296734", 
-            "type": [
-                "transfer"
-            ], 
-            "edgeIds": [
-                "transfer_0xa21b4397775ffc198974af3b3040b710129121930x8ae1713594c61e2b26fef4b03a7a39fa6f296734"
-            ], 
-            "transferMaxCount": 1, 
-            "transferOverCount": 0, 
-            "gasProviderAmount": 0, 
-            "depositCount": 0, 
-            "crossChainBridgeCount": 0, 
-            "assertsMovementTransfersCount": 0, 
-            "bothOwnedEnsCount": 0, 
-            "light": false
-        }, 
-        {
-            "source": "0xa21b4397775ffc198974af3b3040b71012912193", 
-            "target": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
-            "type": [
-                "assertsMovement", 
-                "ens", 
-                "transfer"
-            ], 
-            "edgeIds": [
-                "asserts_movement_0xa21b4397775ffc198974af3b3040b710129121930x00ca000000cc8411d52d6045c82c7984033e0000", 
-                "ens_0xa21b4397775ffc198974af3b3040b710129121930x00ca000000cc8411d52d6045c82c7984033e0000", 
-                "transfer_0xa21b4397775ffc198974af3b3040b710129121930x00ca000000cc8411d52d6045c82c7984033e0000"
-            ], 
-            "transferMaxCount": 7, 
-            "transferOverCount": 6, 
-            "gasProviderAmount": 0, 
-            "depositCount": 0, 
-            "crossChainBridgeCount": 0, 
-            "assertsMovementTransfersCount": 1, 
-            "bothOwnedEnsCount": 4, 
-            "light": false
-        }, 
-        {
-            "source": "0x8ae1713594c61e2b26fef4b03a7a39fa6f296734", 
-            "target": "0x577c2d035a6f8d69485b772558477cfc3b87ec7b", 
-            "type": [
-                "transfer"
-            ], 
-            "edgeIds": [
-                "transfer_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x577c2d035a6f8d69485b772558477cfc3b87ec7b"
-            ], 
-            "transferMaxCount": 1, 
-            "transferOverCount": 0, 
-            "gasProviderAmount": 0, 
-            "depositCount": 0, 
-            "crossChainBridgeCount": 0, 
-            "assertsMovementTransfersCount": 0, 
-            "bothOwnedEnsCount": 0, 
-            "light": false
-        }, 
-        {
-            "source": "0x577c2d035a6f8d69485b772558477cfc3b87ec7b", 
-            "target": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
-            "type": [
-                "ens"
-            ], 
-            "edgeIds": [
-                "ens_0x577c2d035a6f8d69485b772558477cfc3b87ec7b0x00ca000000cc8411d52d6045c82c7984033e0000"
-            ], 
-            "transferMaxCount": 0, 
-            "transferOverCount": 0, 
-            "gasProviderAmount": 0, 
-            "depositCount": 0, 
-            "crossChainBridgeCount": 0, 
-            "assertsMovementTransfersCount": 0, 
-            "bothOwnedEnsCount": 1, 
-            "light": false
-        }, 
-        {
-            "source": "0xa21b4397775ffc198974af3b3040b71012912193", 
-            "target": "0x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
-            "type": [
-                "transfer"
-            ], 
-            "edgeIds": [
-                "transfer_0xa21b4397775ffc198974af3b3040b710129121930x629d6688dd4546da8935ee1602be62d92b3c5a7c"
-            ], 
-            "transferMaxCount": 1, 
-            "transferOverCount": 0, 
-            "gasProviderAmount": 0, 
-            "depositCount": 0, 
-            "crossChainBridgeCount": 0, 
-            "assertsMovementTransfersCount": 0, 
-            "bothOwnedEnsCount": 0, 
-            "light": false
-        }, 
-        {
-            "source": "0x98db427092018b71b10a712988b4510669eb0ec9", 
-            "target": "0x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
-            "type": [
-                "transfer"
-            ], 
-            "edgeIds": [
-                "transfer_0x98db427092018b71b10a712988b4510669eb0ec90x629d6688dd4546da8935ee1602be62d92b3c5a7c"
-            ], 
-            "transferMaxCount": 2, 
-            "transferOverCount": 2, 
-            "gasProviderAmount": 0, 
-            "depositCount": 0, 
-            "crossChainBridgeCount": 0, 
-            "assertsMovementTransfersCount": 0, 
-            "bothOwnedEnsCount": 0, 
-            "light": false
-        }, 
-        {
-            "source": "0x98db427092018b71b10a712988b4510669eb0ec9", 
-            "target": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
-            "type": [
-                "ens", 
-                "assertsMovement", 
-                "transfer"
-            ], 
-            "edgeIds": [
-                "ens_0x98db427092018b71b10a712988b4510669eb0ec90x00ca000000cc8411d52d6045c82c7984033e0000", 
-                "asserts_movement_0x98db427092018b71b10a712988b4510669eb0ec90x00ca000000cc8411d52d6045c82c7984033e0000", 
-                "transfer_0x98db427092018b71b10a712988b4510669eb0ec90x00ca000000cc8411d52d6045c82c7984033e0000"
-            ], 
-            "transferMaxCount": 60, 
-            "transferOverCount": 20, 
-            "gasProviderAmount": 0, 
-            "depositCount": 0, 
-            "crossChainBridgeCount": 0, 
-            "assertsMovementTransfersCount": 9, 
-            "bothOwnedEnsCount": 6, 
-            "light": false
-        }, 
-        {
-            "source": "0xab5801a7d398351b8be11c439e05c5b3259aec9b", 
-            "target": "0x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
-            "type": [
-                "transfer"
-            ], 
-            "edgeIds": [
-                "transfer_0xab5801a7d398351b8be11c439e05c5b3259aec9b0x629d6688dd4546da8935ee1602be62d92b3c5a7c"
-            ], 
-            "transferMaxCount": 1, 
-            "transferOverCount": 0, 
-            "gasProviderAmount": 0, 
-            "depositCount": 0, 
-            "crossChainBridgeCount": 0, 
-            "assertsMovementTransfersCount": 0, 
-            "bothOwnedEnsCount": 0, 
-            "light": false
-        }
+        // {
+        //     "source": "0x8ae1713594c61e2b26fef4b03a7a39fa6f296734", 
+        //     "target": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
+        //     "type": [
+        //         "transfer", 
+        //         "assertsMovement"
+        //     ], 
+        //     "edgeIds": [
+        //         "transfer_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x00ca000000cc8411d52d6045c82c7984033e0000", 
+        //         "asserts_movement_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x00ca000000cc8411d52d6045c82c7984033e0000"
+        //     ], 
+        //     "transferMaxCount": 4, 
+        //     "transferOverCount": 1, 
+        //     "gasProviderAmount": 0, 
+        //     "depositCount": 0, 
+        //     "crossChainBridgeCount": 0, 
+        //     "assertsMovementTransfersCount": 1, 
+        //     "bothOwnedEnsCount": 0, 
+        //     "light": true
+        // }, 
+        // {
+        //     "source": "0x6903585ab8630b500417c2af3cbb7394756d6c62", 
+        //     "target": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
+        //     "type": [
+        //         "transfer"
+        //     ], 
+        //     "edgeIds": [
+        //         "transfer_0x6903585ab8630b500417c2af3cbb7394756d6c620x00ca000000cc8411d52d6045c82c7984033e0000"
+        //     ], 
+        //     "transferMaxCount": 1, 
+        //     "transferOverCount": 1, 
+        //     "gasProviderAmount": 0, 
+        //     "depositCount": 0, 
+        //     "crossChainBridgeCount": 0, 
+        //     "assertsMovementTransfersCount": 0, 
+        //     "bothOwnedEnsCount": 0, 
+        //     "light": true
+        // }, 
+        // {
+        //     "source": "0x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
+        //     "target": "0x0000000000488b7147b38452e686b41c4fa8bedc", 
+        //     "type": [
+        //         "transfer", 
+        //         "assertsMovement"
+        //     ], 
+        //     "edgeIds": [
+        //         "transfer_0x629d6688dd4546da8935ee1602be62d92b3c5a7c0x0000000000488b7147b38452e686b41c4fa8bedc", 
+        //         "asserts_movement_0x629d6688dd4546da8935ee1602be62d92b3c5a7c0x0000000000488b7147b38452e686b41c4fa8bedc"
+        //     ], 
+        //     "transferMaxCount": 3, 
+        //     "transferOverCount": 0, 
+        //     "gasProviderAmount": 0, 
+        //     "depositCount": 0, 
+        //     "crossChainBridgeCount": 0, 
+        //     "assertsMovementTransfersCount": 3, 
+        //     "bothOwnedEnsCount": 0, 
+        //     "light": false
+        // }, 
+        // {
+        //     "source": "0x8ae1713594c61e2b26fef4b03a7a39fa6f296734", 
+        //     "target": "0x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
+        //     "type": [
+        //         "transfer", 
+        //         "ens"
+        //     ], 
+        //     "edgeIds": [
+        //         "transfer_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
+        //         "ens_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x629d6688dd4546da8935ee1602be62d92b3c5a7c"
+        //     ], 
+        //     "transferMaxCount": 77, 
+        //     "transferOverCount": 26, 
+        //     "gasProviderAmount": 0, 
+        //     "depositCount": 0, 
+        //     "crossChainBridgeCount": 0, 
+        //     "assertsMovementTransfersCount": 0, 
+        //     "bothOwnedEnsCount": 14, 
+        //     "light": false
+        // }, 
+        // {
+        //     "source": "0xab5801a7d398351b8be11c439e05c5b3259aec9b", 
+        //     "target": "0x8ae1713594c61e2b26fef4b03a7a39fa6f296734", 
+        //     "type": [
+        //         "transfer"
+        //     ], 
+        //     "edgeIds": [
+        //         "transfer_0xab5801a7d398351b8be11c439e05c5b3259aec9b0x8ae1713594c61e2b26fef4b03a7a39fa6f296734"
+        //     ], 
+        //     "transferMaxCount": 1, 
+        //     "transferOverCount": 0, 
+        //     "gasProviderAmount": 0, 
+        //     "depositCount": 0, 
+        //     "crossChainBridgeCount": 0, 
+        //     "assertsMovementTransfersCount": 0, 
+        //     "bothOwnedEnsCount": 0, 
+        //     "light": false
+        // }, 
+        // {
+        //     "source": "0xab5801a7d398351b8be11c439e05c5b3259aec9b", 
+        //     "target": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
+        //     "type": [
+        //         "transfer"
+        //     ], 
+        //     "edgeIds": [
+        //         "transfer_0xab5801a7d398351b8be11c439e05c5b3259aec9b0x00ca000000cc8411d52d6045c82c7984033e0000"
+        //     ], 
+        //     "transferMaxCount": 1, 
+        //     "transferOverCount": 0, 
+        //     "gasProviderAmount": 0, 
+        //     "depositCount": 0, 
+        //     "crossChainBridgeCount": 0, 
+        //     "assertsMovementTransfersCount": 0, 
+        //     "bothOwnedEnsCount": 0, 
+        //     "light": false
+        // }, 
+        // {
+        //     "source": "0xa21b4397775ffc198974af3b3040b71012912193", 
+        //     "target": "0x8ae1713594c61e2b26fef4b03a7a39fa6f296734", 
+        //     "type": [
+        //         "transfer"
+        //     ], 
+        //     "edgeIds": [
+        //         "transfer_0xa21b4397775ffc198974af3b3040b710129121930x8ae1713594c61e2b26fef4b03a7a39fa6f296734"
+        //     ], 
+        //     "transferMaxCount": 1, 
+        //     "transferOverCount": 0, 
+        //     "gasProviderAmount": 0, 
+        //     "depositCount": 0, 
+        //     "crossChainBridgeCount": 0, 
+        //     "assertsMovementTransfersCount": 0, 
+        //     "bothOwnedEnsCount": 0, 
+        //     "light": false
+        // }, 
+        // {
+        //     "source": "0xa21b4397775ffc198974af3b3040b71012912193", 
+        //     "target": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
+        //     "type": [
+        //         "assertsMovement", 
+        //         "ens", 
+        //         "transfer"
+        //     ], 
+        //     "edgeIds": [
+        //         "asserts_movement_0xa21b4397775ffc198974af3b3040b710129121930x00ca000000cc8411d52d6045c82c7984033e0000", 
+        //         "ens_0xa21b4397775ffc198974af3b3040b710129121930x00ca000000cc8411d52d6045c82c7984033e0000", 
+        //         "transfer_0xa21b4397775ffc198974af3b3040b710129121930x00ca000000cc8411d52d6045c82c7984033e0000"
+        //     ], 
+        //     "transferMaxCount": 7, 
+        //     "transferOverCount": 6, 
+        //     "gasProviderAmount": 0, 
+        //     "depositCount": 0, 
+        //     "crossChainBridgeCount": 0, 
+        //     "assertsMovementTransfersCount": 1, 
+        //     "bothOwnedEnsCount": 4, 
+        //     "light": false
+        // }, 
+        // {
+        //     "source": "0x8ae1713594c61e2b26fef4b03a7a39fa6f296734", 
+        //     "target": "0x577c2d035a6f8d69485b772558477cfc3b87ec7b", 
+        //     "type": [
+        //         "transfer"
+        //     ], 
+        //     "edgeIds": [
+        //         "transfer_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x577c2d035a6f8d69485b772558477cfc3b87ec7b"
+        //     ], 
+        //     "transferMaxCount": 1, 
+        //     "transferOverCount": 0, 
+        //     "gasProviderAmount": 0, 
+        //     "depositCount": 0, 
+        //     "crossChainBridgeCount": 0, 
+        //     "assertsMovementTransfersCount": 0, 
+        //     "bothOwnedEnsCount": 0, 
+        //     "light": false
+        // }, 
+        // {
+        //     "source": "0x577c2d035a6f8d69485b772558477cfc3b87ec7b", 
+        //     "target": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
+        //     "type": [
+        //         "ens"
+        //     ], 
+        //     "edgeIds": [
+        //         "ens_0x577c2d035a6f8d69485b772558477cfc3b87ec7b0x00ca000000cc8411d52d6045c82c7984033e0000"
+        //     ], 
+        //     "transferMaxCount": 0, 
+        //     "transferOverCount": 0, 
+        //     "gasProviderAmount": 0, 
+        //     "depositCount": 0, 
+        //     "crossChainBridgeCount": 0, 
+        //     "assertsMovementTransfersCount": 0, 
+        //     "bothOwnedEnsCount": 1, 
+        //     "light": false
+        // }, 
+        // {
+        //     "source": "0xa21b4397775ffc198974af3b3040b71012912193", 
+        //     "target": "0x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
+        //     "type": [
+        //         "transfer"
+        //     ], 
+        //     "edgeIds": [
+        //         "transfer_0xa21b4397775ffc198974af3b3040b710129121930x629d6688dd4546da8935ee1602be62d92b3c5a7c"
+        //     ], 
+        //     "transferMaxCount": 1, 
+        //     "transferOverCount": 0, 
+        //     "gasProviderAmount": 0, 
+        //     "depositCount": 0, 
+        //     "crossChainBridgeCount": 0, 
+        //     "assertsMovementTransfersCount": 0, 
+        //     "bothOwnedEnsCount": 0, 
+        //     "light": false
+        // }, 
+        // {
+        //     "source": "0x98db427092018b71b10a712988b4510669eb0ec9", 
+        //     "target": "0x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
+        //     "type": [
+        //         "transfer"
+        //     ], 
+        //     "edgeIds": [
+        //         "transfer_0x98db427092018b71b10a712988b4510669eb0ec90x629d6688dd4546da8935ee1602be62d92b3c5a7c"
+        //     ], 
+        //     "transferMaxCount": 2, 
+        //     "transferOverCount": 2, 
+        //     "gasProviderAmount": 0, 
+        //     "depositCount": 0, 
+        //     "crossChainBridgeCount": 0, 
+        //     "assertsMovementTransfersCount": 0, 
+        //     "bothOwnedEnsCount": 0, 
+        //     "light": false
+        // }, 
+        // {
+        //     "source": "0x98db427092018b71b10a712988b4510669eb0ec9", 
+        //     "target": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
+        //     "type": [
+        //         "ens", 
+        //         "assertsMovement", 
+        //         "transfer"
+        //     ], 
+        //     "edgeIds": [
+        //         "ens_0x98db427092018b71b10a712988b4510669eb0ec90x00ca000000cc8411d52d6045c82c7984033e0000", 
+        //         "asserts_movement_0x98db427092018b71b10a712988b4510669eb0ec90x00ca000000cc8411d52d6045c82c7984033e0000", 
+        //         "transfer_0x98db427092018b71b10a712988b4510669eb0ec90x00ca000000cc8411d52d6045c82c7984033e0000"
+        //     ], 
+        //     "transferMaxCount": 60, 
+        //     "transferOverCount": 20, 
+        //     "gasProviderAmount": 0, 
+        //     "depositCount": 0, 
+        //     "crossChainBridgeCount": 0, 
+        //     "assertsMovementTransfersCount": 9, 
+        //     "bothOwnedEnsCount": 6, 
+        //     "light": false
+        // }, 
+        // {
+        //     "source": "0xab5801a7d398351b8be11c439e05c5b3259aec9b", 
+        //     "target": "0x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
+        //     "type": [
+        //         "transfer"
+        //     ], 
+        //     "edgeIds": [
+        //         "transfer_0xab5801a7d398351b8be11c439e05c5b3259aec9b0x629d6688dd4546da8935ee1602be62d92b3c5a7c"
+        //     ], 
+        //     "transferMaxCount": 1, 
+        //     "transferOverCount": 0, 
+        //     "gasProviderAmount": 0, 
+        //     "depositCount": 0, 
+        //     "crossChainBridgeCount": 0, 
+        //     "assertsMovementTransfersCount": 0, 
+        //     "bothOwnedEnsCount": 0, 
+        //     "light": false
+        // }
     ]
     const colors: any = {
         'exchange': {
@@ -409,6 +404,8 @@ const ComD3Force = (props: any) => {
             'stroke': '#f2a0b9'
         }
     }
+    const width: number = 1200
+    const height: number = 900
     const simulationContent: any = useRef({
         forceSimulation: {},
         simulationSvg: {},
@@ -418,10 +415,10 @@ const ComD3Force = (props: any) => {
     })
 
     useEffect(() => {
-        if (width && height && nodes.length && links.length) {
+        if (nodes.length && links.length) {
             initData()
         }
-    }, [width, height, nodes, links])
+    }, [nodes, links])
 
     const initData = () => {
         initSvg()
@@ -547,7 +544,7 @@ const ComD3Force = (props: any) => {
     // 渲染path
     const linkArc = (d: any) => {
         if (d.isDualChannel) {
-            const r = 1000 // Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y)
+            const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y)
             return `
                 M${d.source.x},${d.source.y}
                 A${r},${r} 0 0,1 ${d.target.x},${d.target.y}
@@ -564,30 +561,16 @@ const ComD3Force = (props: any) => {
     // M表示“Move to”(移动到)命令，A表示“Arc”(弧形)命令，L表示“Line”(直线)命令。
     const pathTextArc = (d: any) => {
         if (d.isDualChannel) {
-            const r = 1000
-            if (d.target.x < d.source.x) { // 判断边是从左到右，还是右到左
-                return `
-                    M${d.target.x},${d.target.y + 12}
-                    A${r},${r} 0 0,0 ${d.source.x},${d.source.y + 12}
-                `
-            } else {
-                return `
-                    M${d.source.x},${d.source.y - 6}
-                    A${r},${r} 0 0,1 ${d.target.x},${d.target.y - 6}
-                `
-            }
+            const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y)
+            return `
+                M${d.source.x},${d.source.y - 6}
+                A${r},${r} 0 0,1 ${d.target.x},${d.target.y - 6}
+            `
         } else {
-            if (d.target.x < d.source.x) {
-                return `
-                    M${d.target.x},${d.target.y + 12}
-                    L${d.source.x},${d.source.y + 12}
-                `
-            } else {
-                return `
-                    M${d.source.x},${d.source.y - 6}
-                    L${d.target.x},${d.target.y - 6}
-                `
-            }
+            return `
+                M${d.source.x},${d.source.y - 6}
+                L${d.target.x},${d.target.y - 6}
+            `
         }
     }
 
@@ -674,6 +657,13 @@ const ComD3Force = (props: any) => {
             .attr('id', (node: any) => {
                 return `id${node.address}`
             })
+            .on("click", (event: any, node: any) => {
+                event.stopPropagation()
+            })
+            .on('mouseover', (node: any) => {
+            })
+            .on('mouseleave', (node: any) => {
+            })
             .call(
                 d3
                     .drag()
@@ -711,15 +701,9 @@ const ComD3Force = (props: any) => {
                     return 9
                 }
             })
-            .on('click', (event: any, node: any) => {
-                event.stopPropagation()
-                nodeClick(node)
+            .on('mouseover', (node: any) => {
             })
-            .on('mouseover', (event: any, node: any) => {
-                event.stopPropagation()
-            })
-            .on('mouseleave', (event: any, node: any) => {
-                event.stopPropagation()
+            .on('mouseleave', (node: any) => {
             })
             
         g.append('svg:text')
@@ -788,11 +772,6 @@ const ComD3Force = (props: any) => {
             })
     }
 
-    // 节点点击事件
-    const nodeClick = (node: any) => {
-        console.log('node====', node)
-    }
-
     /**
      * 节点（开始）拖拽事件
     */
@@ -815,8 +794,7 @@ const ComD3Force = (props: any) => {
     */
     const dragended = (event:any, d: any) => {
         if (!event.active) simulationContent.current.forceSimulation.alphaTarget(0)
-        // d.fx = null
-        // d.fy = null
+        simulationContent.current.forceSimulation.stop()
     }
 
     return (

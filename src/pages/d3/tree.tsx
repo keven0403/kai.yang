@@ -6,7 +6,7 @@ const MainContent = styled.div`
     background: #000;
 `
 
-const Profile = () => {
+const PageTree = () => {
     return (
         <MainContent>
             <ComD3Force />
@@ -14,4 +14,4 @@ const Profile = () => {
     )
 }
 
-export default Profile
+export default PageTree

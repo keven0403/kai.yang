@@ -61,19 +61,38 @@ const ComMenu = () => {
             ],
         },
         {
-            key: '/force',
-            label: (
-                <RouteLink
-                    defaultSelectedKeys=''
-                    defaultKey='/force'
-                    to='/force'
-                    normalIcon=''
-                    activeIcon=''
-                    title='force'
-                    isShowIcon={false}
-                />
-            ),
+            key: '/d3',
+            label: 'D3',
             icon: <SettingOutlined />,
+            children: [
+                { 
+                    key: '/force',
+                    label: (
+                        <RouteLink
+                            to='/force'
+                            normalIcon=''
+                            activeIcon=''
+                            title='force'
+                            isShowIcon={false}
+                        />
+                    ), 
+                    icon: <AppstoreOutlined />,
+                },
+                    
+                { 
+                    key: '/tree',
+                    label: (
+                        <RouteLink
+                            to='/tree'
+                            normalIcon=''
+                            activeIcon=''
+                            title='tree'
+                            isShowIcon={false}
+                        />
+                    ), 
+                    icon: <AppstoreOutlined />,
+                }
+            ],
         }
     ]
 

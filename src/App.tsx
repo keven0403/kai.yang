@@ -7,8 +7,8 @@ import ComHeader from '@/components/Header'
 import ComMenu from '@/components/Menu'
 import Home from '@/pages/home'
 import Pricing from '@/pages/pricing'
-import Profile from '@/pages/profile'
-
+import PageForce from '@/pages/d3/force'
+import PageTree from '@/pages/d3/tree'
 
 const AppContent = styled.div`
 	background-color: var(--child-05-color);
@@ -42,7 +42,8 @@ const App = () => {
 							<Route path="/" element={<Navigate to="/title1" replace />} />
 							<Route path='/title1' element={<Home />}/>
 							<Route path='/title2-1' element={<Pricing />}/>
-							<Route path='/force' element={<Profile />}/>
+							<Route path='/force' element={<PageForce />}/>
+							<Route path='/tree' element={<PageTree />}/>
 						</Routes>
 					</LayoutContent>
 
