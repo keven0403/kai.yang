@@ -407,6 +407,26 @@ const ComD3Force = (props: any) => {
         'high-risk': {
             'fill': 'red',
             'stroke': '#f2a0b9'
+        },
+        'A': {
+            'fill': '#af7373',
+            'stroke': '#a6244b'
+        },
+        'B': {
+            'fill': '#0c311a',
+            'stroke': '#a0f2e7'
+        },
+        'C': {
+            'fill': '#7379af',
+            'stroke': '#e8a0f2'
+        },
+        'D': {
+            'fill': '#73af8b',
+            'stroke': '#a0e4f2'
+        },
+        'E': {
+            'fill': '#aaaf73',
+            'stroke': '#e3f2a0'
         }
     }
     const simulationContent: any = useRef({
@@ -426,12 +446,15 @@ const ComD3Force = (props: any) => {
     const initData = () => {
         initSvg()
         const arrLinks: any[] = setLinkGroup(links)
-        initSimulation(nodes, arrLinks)
-        drawMarker(arrLinks)
-        drawSimulationLines(arrLinks)
+        restart(arrLinks, nodes)
+    }
+
+    const restart = (links: any[], nodes: any[]) => {
+        initSimulation(nodes, links)
+        drawMarker(links)
+        drawSimulationLines(links)
         drawSimulationNodes(nodes)
-        simulationContent.current.forceSimulation.alpha(1)
-        simulationContent.current.forceSimulation.restart()
+        simulationContent.current.forceSimulation.alphaDecay(.5).restart()
     }
 
     const initSimulation = (nodes: any[], links: any[]) => {
@@ -443,7 +466,6 @@ const ComD3Force = (props: any) => {
             .force("y", d3.forceX(height / 2).strength(0.06))
             .force('collide', d3.forceCollide().radius(80))
 
-        simulationContent.current.forceSimulation.alphaDecay(0.1)
         simulationContent.current.forceSimulation.on("tick", tickDraw)
     }
 
@@ -500,6 +522,7 @@ const ComD3Force = (props: any) => {
 
     // 找出是否是双向边
     const setLinkGroup = (arrLinks: any[]) => {
+        console.log('arrLinks==', arrLinks)
         let linkGroup: any = {}
         let resLinkList: any[] = updateLinks(arrLinks)
         resLinkList.forEach((item: any, index: number) => {
@@ -513,6 +536,8 @@ const ComD3Force = (props: any) => {
             let key: string = link.key
             if (linkGroup[key].length > 1) {
                 link.isDualChannel = true // 双向边
+            } else {
+                link.isDualChannel = false // 单向边
             }
             if (link.target.address === defaultAddress) {
                 link.isFather = true
@@ -623,6 +648,9 @@ const ComD3Force = (props: any) => {
         const sLink: any = simulationContent.current.simulationLinks.data(links)
         sLink.exit().remove()
         const linkG: any = sLink.enter().append('svg:g')
+            .attr('class', (link: any) => {
+                return `g-${link.target.address}-${link.source.address}`
+            })
             .attr('id', (link: any) => {
                 return `g-${link.source.address}-${link.target.address}`
             })
@@ -667,6 +695,7 @@ const ComD3Force = (props: any) => {
 
     // 画节点
     const drawSimulationNodes = (nodes: any) => {
+        let timer: any
         const sNode :any = simulationContent.current.simulationNodes.data(nodes)
         sNode.exit().remove()
         const g = sNode.enter().append('svg:g')
@@ -687,6 +716,7 @@ const ComD3Force = (props: any) => {
             .attr('id', (node: any) => {
                 return 'circle' + node.address
             })
+            .attr('cursor', 'pointer')
             .attr('fill', (node: any) => {
                 return colors[node.type].fill
             })
@@ -713,7 +743,15 @@ const ComD3Force = (props: any) => {
             })
             .on('click', (event: any, node: any) => {
                 event.stopPropagation()
-                nodeClick(node)
+                timer && clearTimeout(timer)
+                timer = setTimeout(() => {
+                    nodeClick(node)
+                },300)
+            })
+            .on('dblclick', (event: any, node: any) => {
+                event.stopPropagation()
+                timer && clearTimeout(timer)
+                nodeDbClick(node)
             })
             .on('mouseover', (event: any, node: any) => {
                 event.stopPropagation()
@@ -788,9 +826,156 @@ const ComD3Force = (props: any) => {
             })
     }
 
-    // 节点点击事件
+    // 单击节点点击事件
     const nodeClick = (node: any) => {
-        console.log('node====', node)
+        const address: string = node.address
+        d3.select(`#id${address}`).attr('display', 'none')
+        d3.selectAll('[id*=g-' + address + ']').attr('display', 'none')
+        d3.selectAll('[class*=g-' + address + ']').attr('display', 'none')
+    }
+
+    // 双击节点点击事件
+    const nodeDbClick = (node: any) => {
+        const address: string = node.address || ''
+        const addNodes: any[] = [
+            {
+                "address": "A", 
+                "type": "A", 
+                "tag": "serialtrade.eth", 
+                "light": true
+            },
+            {
+                "address": "B", 
+                "type": "B", 
+                "tag": "serialtrade.eth", 
+                "light": false
+            },
+            {
+                "address": "C", 
+                "type": "C", 
+                "tag": "serialtrade.eth", 
+                "light": false
+            },
+            {
+                "address": "D", 
+                "type": "D", 
+                "tag": "serialtrade.eth", 
+                "light": false
+            },
+            {
+                "address": "E", 
+                "type": "E", 
+                "tag": "serialtrade.eth", 
+                "light": false
+            }
+        ]
+        const addLinks: any[] = [
+            {
+                "source": address, 
+                "target": "A", 
+                "type": [
+                    "ens", 
+                    "transfer"
+                ], 
+                "edgeIds": [
+                    "ens_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x0000000000488b7147b38452e686b41c4fa8bedc", 
+                    "transfer_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x0000000000488b7147b38452e686b41c4fa8bedc"
+                ], 
+                "transferMaxCount": 1, 
+                "transferOverCount": 0, 
+                "gasProviderAmount": 0, 
+                "depositCount": 0, 
+                "crossChainBridgeCount": 0, 
+                "assertsMovementTransfersCount": 0, 
+                "bothOwnedEnsCount": 1, 
+                "light": true
+            }, 
+            {
+                "source": address, 
+                "target": "B", 
+                "type": [
+                    "ens", 
+                    "transfer"
+                ], 
+                "edgeIds": [
+                    "ens_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x0000000000488b7147b38452e686b41c4fa8bedc", 
+                    "transfer_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x0000000000488b7147b38452e686b41c4fa8bedc"
+                ], 
+                "transferMaxCount": 1, 
+                "transferOverCount": 0, 
+                "gasProviderAmount": 0, 
+                "depositCount": 0, 
+                "crossChainBridgeCount": 0, 
+                "assertsMovementTransfersCount": 0, 
+                "bothOwnedEnsCount": 1, 
+                "light": false
+            },
+            {
+                "source": address, 
+                "target": "C", 
+                "type": [
+                    "ens", 
+                    "transfer"
+                ], 
+                "edgeIds": [
+                    "ens_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x0000000000488b7147b38452e686b41c4fa8bedc", 
+                    "transfer_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x0000000000488b7147b38452e686b41c4fa8bedc"
+                ], 
+                "transferMaxCount": 1, 
+                "transferOverCount": 0, 
+                "gasProviderAmount": 0, 
+                "depositCount": 0, 
+                "crossChainBridgeCount": 0, 
+                "assertsMovementTransfersCount": 0, 
+                "bothOwnedEnsCount": 1, 
+                "light": false
+            },
+            {
+                "source": address, 
+                "target": "D", 
+                "type": [
+                    "ens", 
+                    "transfer"
+                ], 
+                "edgeIds": [
+                    "ens_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x0000000000488b7147b38452e686b41c4fa8bedc", 
+                    "transfer_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x0000000000488b7147b38452e686b41c4fa8bedc"
+                ], 
+                "transferMaxCount": 1, 
+                "transferOverCount": 0, 
+                "gasProviderAmount": 0, 
+                "depositCount": 0, 
+                "crossChainBridgeCount": 0, 
+                "assertsMovementTransfersCount": 0, 
+                "bothOwnedEnsCount": 1, 
+                "light": false
+            },
+            {
+                "source": address, 
+                "target": "E", 
+                "type": [
+                    "ens", 
+                    "transfer"
+                ], 
+                "edgeIds": [
+                    "ens_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x0000000000488b7147b38452e686b41c4fa8bedc", 
+                    "transfer_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x0000000000488b7147b38452e686b41c4fa8bedc"
+                ], 
+                "transferMaxCount": 1, 
+                "transferOverCount": 0, 
+                "gasProviderAmount": 0, 
+                "depositCount": 0, 
+                "crossChainBridgeCount": 0, 
+                "assertsMovementTransfersCount": 0, 
+                "bothOwnedEnsCount": 1, 
+                "light": false
+            }
+        ]
+        const arrLinks: any[] = setLinkGroup(addLinks)
+        removeSvgNode(simulationContent.current.simulationSvg)
+        initLinePathAndNode(simulationContent.current.simulationSvg)
+        bindSvgHander(simulationContent.current.simulationSvg)
+        restart([...links, ...arrLinks], [...nodes, ...addNodes])
     }
 
     /**

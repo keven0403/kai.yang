@@ -1,375 +1,19 @@
 import styled from 'styled-components'
 import * as d3 from 'd3'
 import { useEffect, useRef } from 'react'
+import { uuid, formatStringToUppercase } from '@/utils'
 
 const MainContent = styled.div``
 
 const ComD3Force = (props: any) => {
-    const defaultAddress: string = '0x0000000000488b7147b38452e686b41c4fa8bedc'
-    const nodes: any[] = [
-        {
-            "address": "0x8ae1713594c61e2b26fef4b03a7a39fa6f296734", 
-            "type": "EOA", 
-            "tag": "dm-me-on-twitter-my-username-is-robertjfclarke.eth", 
-            "light": true
-        }, 
-        {
-            "address": "0xa21b4397775ffc198974af3b3040b71012912193", 
-            "type": "EOA", 
-            "tag": null, 
-            "light": false
-        }, 
-        {
-            "address": "0x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
-            "type": "EOA", 
-            "tag": null, 
-            "light": false
-        }, 
-        {
-            "address": "0xab5801a7d398351b8be11c439e05c5b3259aec9b", 
-            "type": "EOA", 
-            "tag": "Vitalik", 
-            "light": false
-        }, 
-        {
-            "address": "0x98db427092018b71b10a712988b4510669eb0ec9", 
-            "type": "EOA", 
-            "tag": "mfermarcus.eth", 
-            "light": false
-        }, 
-        {
-            "address": "0x6903585ab8630b500417c2af3cbb7394756d6c62", 
-            "type": "high-risk", 
-            "tag": null, 
-            "light": true
-        }, 
-        {
-            "address": "0x0000000000488b7147b38452e686b41c4fa8bedc", 
-            "type": "main address", 
-            "tag": "punkfractions.eth", 
-            "light": true
-        }, 
-        {
-            "address": "0x577c2d035a6f8d69485b772558477cfc3b87ec7b", 
-            "type": "EOA", 
-            "tag": null, 
-            "light": false
-        }, 
-        {
-            "address": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
-            "type": "EOA", 
-            "tag": "serialtrade.eth", 
-            "light": true
-        }
-    ]
-    const links: any[] = [
-        {
-            "source": "0x8ae1713594c61e2b26fef4b03a7a39fa6f296734", 
-            "target": "0x0000000000488b7147b38452e686b41c4fa8bedc", 
-            "type": [
-                "ens", 
-                "transfer"
-            ], 
-            "edgeIds": [
-                "ens_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x0000000000488b7147b38452e686b41c4fa8bedc", 
-                "transfer_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x0000000000488b7147b38452e686b41c4fa8bedc"
-            ], 
-            "transferMaxCount": 1, 
-            "transferOverCount": 0, 
-            "gasProviderAmount": 0, 
-            "depositCount": 0, 
-            "crossChainBridgeCount": 0, 
-            "assertsMovementTransfersCount": 0, 
-            "bothOwnedEnsCount": 1, 
-            "light": true
-        }, 
-        {
-            "source": "0x0000000000488b7147b38452e686b41c4fa8bedc", 
-            "target": "0x8ae1713594c61e2b26fef4b03a7a39fa6f296734", 
-            "type": [
-                "ens", 
-                "transfer"
-            ], 
-            "edgeIds": [
-                "ens_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x0000000000488b7147b38452e686b41c4fa8bedc", 
-                "transfer_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x0000000000488b7147b38452e686b41c4fa8bedc"
-            ], 
-            "transferMaxCount": 1, 
-            "transferOverCount": 0, 
-            "gasProviderAmount": 0, 
-            "depositCount": 0, 
-            "crossChainBridgeCount": 0, 
-            "assertsMovementTransfersCount": 0, 
-            "bothOwnedEnsCount": 1, 
-            "light": true
-        }, 
-        // {
-        //     "source": "0x8ae1713594c61e2b26fef4b03a7a39fa6f296734", 
-        //     "target": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
-        //     "type": [
-        //         "transfer", 
-        //         "assertsMovement"
-        //     ], 
-        //     "edgeIds": [
-        //         "transfer_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x00ca000000cc8411d52d6045c82c7984033e0000", 
-        //         "asserts_movement_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x00ca000000cc8411d52d6045c82c7984033e0000"
-        //     ], 
-        //     "transferMaxCount": 4, 
-        //     "transferOverCount": 1, 
-        //     "gasProviderAmount": 0, 
-        //     "depositCount": 0, 
-        //     "crossChainBridgeCount": 0, 
-        //     "assertsMovementTransfersCount": 1, 
-        //     "bothOwnedEnsCount": 0, 
-        //     "light": true
-        // }, 
-        // {
-        //     "source": "0x6903585ab8630b500417c2af3cbb7394756d6c62", 
-        //     "target": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
-        //     "type": [
-        //         "transfer"
-        //     ], 
-        //     "edgeIds": [
-        //         "transfer_0x6903585ab8630b500417c2af3cbb7394756d6c620x00ca000000cc8411d52d6045c82c7984033e0000"
-        //     ], 
-        //     "transferMaxCount": 1, 
-        //     "transferOverCount": 1, 
-        //     "gasProviderAmount": 0, 
-        //     "depositCount": 0, 
-        //     "crossChainBridgeCount": 0, 
-        //     "assertsMovementTransfersCount": 0, 
-        //     "bothOwnedEnsCount": 0, 
-        //     "light": true
-        // }, 
-        // {
-        //     "source": "0x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
-        //     "target": "0x0000000000488b7147b38452e686b41c4fa8bedc", 
-        //     "type": [
-        //         "transfer", 
-        //         "assertsMovement"
-        //     ], 
-        //     "edgeIds": [
-        //         "transfer_0x629d6688dd4546da8935ee1602be62d92b3c5a7c0x0000000000488b7147b38452e686b41c4fa8bedc", 
-        //         "asserts_movement_0x629d6688dd4546da8935ee1602be62d92b3c5a7c0x0000000000488b7147b38452e686b41c4fa8bedc"
-        //     ], 
-        //     "transferMaxCount": 3, 
-        //     "transferOverCount": 0, 
-        //     "gasProviderAmount": 0, 
-        //     "depositCount": 0, 
-        //     "crossChainBridgeCount": 0, 
-        //     "assertsMovementTransfersCount": 3, 
-        //     "bothOwnedEnsCount": 0, 
-        //     "light": false
-        // }, 
-        // {
-        //     "source": "0x8ae1713594c61e2b26fef4b03a7a39fa6f296734", 
-        //     "target": "0x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
-        //     "type": [
-        //         "transfer", 
-        //         "ens"
-        //     ], 
-        //     "edgeIds": [
-        //         "transfer_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
-        //         "ens_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x629d6688dd4546da8935ee1602be62d92b3c5a7c"
-        //     ], 
-        //     "transferMaxCount": 77, 
-        //     "transferOverCount": 26, 
-        //     "gasProviderAmount": 0, 
-        //     "depositCount": 0, 
-        //     "crossChainBridgeCount": 0, 
-        //     "assertsMovementTransfersCount": 0, 
-        //     "bothOwnedEnsCount": 14, 
-        //     "light": false
-        // }, 
-        // {
-        //     "source": "0xab5801a7d398351b8be11c439e05c5b3259aec9b", 
-        //     "target": "0x8ae1713594c61e2b26fef4b03a7a39fa6f296734", 
-        //     "type": [
-        //         "transfer"
-        //     ], 
-        //     "edgeIds": [
-        //         "transfer_0xab5801a7d398351b8be11c439e05c5b3259aec9b0x8ae1713594c61e2b26fef4b03a7a39fa6f296734"
-        //     ], 
-        //     "transferMaxCount": 1, 
-        //     "transferOverCount": 0, 
-        //     "gasProviderAmount": 0, 
-        //     "depositCount": 0, 
-        //     "crossChainBridgeCount": 0, 
-        //     "assertsMovementTransfersCount": 0, 
-        //     "bothOwnedEnsCount": 0, 
-        //     "light": false
-        // }, 
-        // {
-        //     "source": "0xab5801a7d398351b8be11c439e05c5b3259aec9b", 
-        //     "target": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
-        //     "type": [
-        //         "transfer"
-        //     ], 
-        //     "edgeIds": [
-        //         "transfer_0xab5801a7d398351b8be11c439e05c5b3259aec9b0x00ca000000cc8411d52d6045c82c7984033e0000"
-        //     ], 
-        //     "transferMaxCount": 1, 
-        //     "transferOverCount": 0, 
-        //     "gasProviderAmount": 0, 
-        //     "depositCount": 0, 
-        //     "crossChainBridgeCount": 0, 
-        //     "assertsMovementTransfersCount": 0, 
-        //     "bothOwnedEnsCount": 0, 
-        //     "light": false
-        // }, 
-        // {
-        //     "source": "0xa21b4397775ffc198974af3b3040b71012912193", 
-        //     "target": "0x8ae1713594c61e2b26fef4b03a7a39fa6f296734", 
-        //     "type": [
-        //         "transfer"
-        //     ], 
-        //     "edgeIds": [
-        //         "transfer_0xa21b4397775ffc198974af3b3040b710129121930x8ae1713594c61e2b26fef4b03a7a39fa6f296734"
-        //     ], 
-        //     "transferMaxCount": 1, 
-        //     "transferOverCount": 0, 
-        //     "gasProviderAmount": 0, 
-        //     "depositCount": 0, 
-        //     "crossChainBridgeCount": 0, 
-        //     "assertsMovementTransfersCount": 0, 
-        //     "bothOwnedEnsCount": 0, 
-        //     "light": false
-        // }, 
-        // {
-        //     "source": "0xa21b4397775ffc198974af3b3040b71012912193", 
-        //     "target": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
-        //     "type": [
-        //         "assertsMovement", 
-        //         "ens", 
-        //         "transfer"
-        //     ], 
-        //     "edgeIds": [
-        //         "asserts_movement_0xa21b4397775ffc198974af3b3040b710129121930x00ca000000cc8411d52d6045c82c7984033e0000", 
-        //         "ens_0xa21b4397775ffc198974af3b3040b710129121930x00ca000000cc8411d52d6045c82c7984033e0000", 
-        //         "transfer_0xa21b4397775ffc198974af3b3040b710129121930x00ca000000cc8411d52d6045c82c7984033e0000"
-        //     ], 
-        //     "transferMaxCount": 7, 
-        //     "transferOverCount": 6, 
-        //     "gasProviderAmount": 0, 
-        //     "depositCount": 0, 
-        //     "crossChainBridgeCount": 0, 
-        //     "assertsMovementTransfersCount": 1, 
-        //     "bothOwnedEnsCount": 4, 
-        //     "light": false
-        // }, 
-        // {
-        //     "source": "0x8ae1713594c61e2b26fef4b03a7a39fa6f296734", 
-        //     "target": "0x577c2d035a6f8d69485b772558477cfc3b87ec7b", 
-        //     "type": [
-        //         "transfer"
-        //     ], 
-        //     "edgeIds": [
-        //         "transfer_0x8ae1713594c61e2b26fef4b03a7a39fa6f2967340x577c2d035a6f8d69485b772558477cfc3b87ec7b"
-        //     ], 
-        //     "transferMaxCount": 1, 
-        //     "transferOverCount": 0, 
-        //     "gasProviderAmount": 0, 
-        //     "depositCount": 0, 
-        //     "crossChainBridgeCount": 0, 
-        //     "assertsMovementTransfersCount": 0, 
-        //     "bothOwnedEnsCount": 0, 
-        //     "light": false
-        // }, 
-        // {
-        //     "source": "0x577c2d035a6f8d69485b772558477cfc3b87ec7b", 
-        //     "target": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
-        //     "type": [
-        //         "ens"
-        //     ], 
-        //     "edgeIds": [
-        //         "ens_0x577c2d035a6f8d69485b772558477cfc3b87ec7b0x00ca000000cc8411d52d6045c82c7984033e0000"
-        //     ], 
-        //     "transferMaxCount": 0, 
-        //     "transferOverCount": 0, 
-        //     "gasProviderAmount": 0, 
-        //     "depositCount": 0, 
-        //     "crossChainBridgeCount": 0, 
-        //     "assertsMovementTransfersCount": 0, 
-        //     "bothOwnedEnsCount": 1, 
-        //     "light": false
-        // }, 
-        // {
-        //     "source": "0xa21b4397775ffc198974af3b3040b71012912193", 
-        //     "target": "0x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
-        //     "type": [
-        //         "transfer"
-        //     ], 
-        //     "edgeIds": [
-        //         "transfer_0xa21b4397775ffc198974af3b3040b710129121930x629d6688dd4546da8935ee1602be62d92b3c5a7c"
-        //     ], 
-        //     "transferMaxCount": 1, 
-        //     "transferOverCount": 0, 
-        //     "gasProviderAmount": 0, 
-        //     "depositCount": 0, 
-        //     "crossChainBridgeCount": 0, 
-        //     "assertsMovementTransfersCount": 0, 
-        //     "bothOwnedEnsCount": 0, 
-        //     "light": false
-        // }, 
-        // {
-        //     "source": "0x98db427092018b71b10a712988b4510669eb0ec9", 
-        //     "target": "0x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
-        //     "type": [
-        //         "transfer"
-        //     ], 
-        //     "edgeIds": [
-        //         "transfer_0x98db427092018b71b10a712988b4510669eb0ec90x629d6688dd4546da8935ee1602be62d92b3c5a7c"
-        //     ], 
-        //     "transferMaxCount": 2, 
-        //     "transferOverCount": 2, 
-        //     "gasProviderAmount": 0, 
-        //     "depositCount": 0, 
-        //     "crossChainBridgeCount": 0, 
-        //     "assertsMovementTransfersCount": 0, 
-        //     "bothOwnedEnsCount": 0, 
-        //     "light": false
-        // }, 
-        // {
-        //     "source": "0x98db427092018b71b10a712988b4510669eb0ec9", 
-        //     "target": "0x00ca000000cc8411d52d6045c82c7984033e0000", 
-        //     "type": [
-        //         "ens", 
-        //         "assertsMovement", 
-        //         "transfer"
-        //     ], 
-        //     "edgeIds": [
-        //         "ens_0x98db427092018b71b10a712988b4510669eb0ec90x00ca000000cc8411d52d6045c82c7984033e0000", 
-        //         "asserts_movement_0x98db427092018b71b10a712988b4510669eb0ec90x00ca000000cc8411d52d6045c82c7984033e0000", 
-        //         "transfer_0x98db427092018b71b10a712988b4510669eb0ec90x00ca000000cc8411d52d6045c82c7984033e0000"
-        //     ], 
-        //     "transferMaxCount": 60, 
-        //     "transferOverCount": 20, 
-        //     "gasProviderAmount": 0, 
-        //     "depositCount": 0, 
-        //     "crossChainBridgeCount": 0, 
-        //     "assertsMovementTransfersCount": 9, 
-        //     "bothOwnedEnsCount": 6, 
-        //     "light": false
-        // }, 
-        // {
-        //     "source": "0xab5801a7d398351b8be11c439e05c5b3259aec9b", 
-        //     "target": "0x629d6688dd4546da8935ee1602be62d92b3c5a7c", 
-        //     "type": [
-        //         "transfer"
-        //     ], 
-        //     "edgeIds": [
-        //         "transfer_0xab5801a7d398351b8be11c439e05c5b3259aec9b0x629d6688dd4546da8935ee1602be62d92b3c5a7c"
-        //     ], 
-        //     "transferMaxCount": 1, 
-        //     "transferOverCount": 0, 
-        //     "gasProviderAmount": 0, 
-        //     "depositCount": 0, 
-        //     "crossChainBridgeCount": 0, 
-        //     "assertsMovementTransfersCount": 0, 
-        //     "bothOwnedEnsCount": 0, 
-        //     "light": false
-        // }
-    ]
+    const width: number = props.width || 0
+    const height: number = props.height || 0
+    const textPadding = 5 // 文字与方框间距,注：固定值5
+    const rectMinWidth = 50 // 节点方框默认最小，
+    const circleR = 8 // 圆圈半径
+    const rootName: string = '根节点'
+    const duration = 750 // 动画持续时间]
+    const rootNameFontSize = 12
     const colors: any = {
         'exchange': {
             'fill': '#8D48E3',
@@ -404,8 +48,6 @@ const ComD3Force = (props: any) => {
             'stroke': '#f2a0b9'
         }
     }
-    const width: number = 1200
-    const height: number = 900
     const simulationContent: any = useRef({
         forceSimulation: {},
         simulationSvg: {},
@@ -413,65 +55,506 @@ const ComD3Force = (props: any) => {
         simulationNodes: {},
         simulationPashText: {}
     })
+    const treeData: any = {
+        up: {
+            name: "前端",
+            "prop": "web",
+            "url": 'https://blog.csdn.net/weixin_41192489/category_9421858.html',
+            "link": "博客",
+            "children":[
+                {
+                    name: "编程语言",
+                    "prop": "codeType",
+                    "disabled": true,
+                    "children": [
+                        {
+                            name: "HTML",
+                            "prop": "HTML",
+                        },
+                        {
+                            name: "CSS",
+                            "prop": "CSS",
+                        },
+                        {
+                            name: "Javascript",
+                            "prop": "Javascript",
+                        },
+                    ]
+                },
+                {
+                    name: "JS框架",
+                    "prop": "jsFrame",
+                    "disabled": true,
+                    "children":
+                        [
+                            {
+                                name: "Vue",
+                                "prop": "Vue",
+                            },
+                            {
+                                name: "React",
+                                "prop": "React",
+                            },
+                            {
+                                name: "Angular",
+                                "prop": "Angular",
+                                dicType: 'doc'
+                            },
+                        ]
+                },
+                {
+                    name: "UI框架",
+                    "prop": "uiFrame",
+                    "disabled": true,
+                    "url": '',
+                    "children": [
+                        {
+                            name: "Element UI",
+                            "prop": "element_ui",
+                            "url": 'https://element.eleme.cn/#/zh-CN/component/i18n',
+                            "link": "官网",
+                        },
+                        {
+                            name: "iview UI",
+                            "prop": "iview UI",
+                            "url": 'http://v1.iviewui.com/docs/introduce',
+                            "link": "官网",
+                        },
+                        {
+                            name: "layUI",
+                            "prop": "layUI",
+                            "url": 'https://www.layui.com/doc/',
+                            "link": "官网",
+                        },
+                        {
+                            name: "Ant Design",
+                            "prop": "Ant Design",
+                            "url": 'https://www.antdv.com/docs/vue/introduce-cn/',
+                            "link": "官网",
+                        }
+                    ]
+                },
+            ]
+        },
+        down: {
+            name: "后端",
+            "prop": "server",
+            "url": 'https://blog.csdn.net/weixin_41192489/category_11044490.html',
+            "link": "博客",
+            "children": [
+                {
+                    name: "编程语言",
+                    "prop": "codeType",
+                    disabled: true,
+                    "children": [
+                        {
+                            name: "Node.js",
+                            "prop": "nodejs",
+                            dicType: 'doc'
+                        },
+                        {
+                            name: "Java",
+                            "prop": "java",
+                        },
+                    ]
+                },
+                {
+                    name: "框架",
+                    "prop": "frame",
+                    disabled: true,
+                    "children": [
+                        {
+                            name: "Koa2",
+                            "prop": "koa2",
+                        },
+                    ]
+                },
+                {
+                    name: "数据库",
+                    "prop": "database",
+                    disabled: true,
+                    "children": [
+                        {
+                            name: "Redis",
+                            "prop": "Redis",
+                            dicType: 'doc'
+                        },
+                        {
+                            name: "MongoDB",
+                            "prop": "MongoDB",
+                            dicType: 'doc'
+                        },
+                        {
+                            name: "MySQL",
+                            "prop": "MySQL",
+                            dicType: 'doc'
+                        },
+                    ]
+                },
+            ]
+        }
+    }
+    const direction = ['up', 'down'] // 分为上下两个方向 'upward', 'downward' ['r', 'l']
+    // 上下两块块数据源
+    let root: any = { up: {}, down: {}}
 
     useEffect(() => {
-        if (nodes.length && links.length) {
+        if (width && height) {
             initData()
         }
-    }, [nodes, links])
+    }, [width, height])
 
     const initData = () => {
         initSvg()
-        const arrLinks: any[] = setLinkGroup(links)
-        initSimulation(nodes, arrLinks)
-        drawMarker(arrLinks)
-        drawSimulationLines(arrLinks)
-        drawSimulationNodes(nodes)
-        simulationContent.current.forceSimulation.alpha(1)
-        simulationContent.current.forceSimulation.restart()
-    }
-
-    const initSimulation = (nodes: any[], links: any[]) => {
-        simulationContent.current.forceSimulation = d3.forceSimulation(nodes)
-            .force("link", d3.forceLink(links).distance(200).id((d: any) => { return d.address }))
-            .force("center", d3.forceCenter(width / 2, height / 2))
-            .force("charge", d3.forceManyBody().strength(-400))
-            .force("x", d3.forceX(width / 2).strength(0.06))
-            .force("y", d3.forceX(height / 2).strength(0.06))
-            .force('collide', d3.forceCollide().radius(80))
-
-        simulationContent.current.forceSimulation.alphaDecay(0.1)
-        simulationContent.current.forceSimulation.on("tick", tickDraw)
     }
 
     // 初始化svg
     const initSvg = () => {
-        simulationContent.current.simulationSvg  = d3.select(`.svg-content`).append("svg")
+        simulationContent.current.simulationSvg = d3.select(`.svg-tree-content`).append("svg")
             .attr("width", width)
             .attr("height", height)
             .attr('viewBox', [0, 0, width, height])
-        removeSvgNode(simulationContent.current.simulationSvg)
-        initLinePathAndNode(simulationContent.current.simulationSvg)
+            d3.selectAll("g").remove()
+        // g标签 容器svg>g
+        const container: any = simulationContent.current.simulationSvg.append('g')
+            .attr('class', "container")
+            .attr('transform', `translate(0, 0) scale(1)`)
         bindSvgHander(simulationContent.current.simulationSvg)
+        drawRoot(container)
+        dealData(container)
     }
 
-    // Remove force layout and data
-    const removeSvgNode = (svg: any) => {
-        svg.select("#buildLineId").remove()
-        svg.select("#buildNodeId").remove()
-    }
+    // 画出根节点
+    const drawRoot = (container: any) => {
+        const fontSize = 20 // 跟节点字体大小
+        const rootNodeLength = rootName.length * fontSize + 30 //根节点字符所占宽度
+        const title = container.append('g')
+            .attr('id', "rootTitle")
+            .attr('class', "rootTitle")
+            .attr("transform", `translate(${width / 2}, ${height / 2})`)
+            .style('cursor', 'pointer')
+            .on("click", (event: any, d: any) => {
+                event.stopPropagation()
+                nodeClick(d) // 节点点击事件
+            })
 
-    // handles to link and node element groups
-    const initLinePathAndNode = (svg: any) => {
-        simulationContent.current.simulationLinks = svg.append('svg:g')
-            .attr('id', 'buildLineId')
-            .attr("fill", "none")
-            .selectAll('path')
+        title.append('svg:rect')
+            .attr('fill', '#1B3539')
+            .attr('stroke','#3CC89F')
+            .attr("y", -27)
+            .attr("x", -(rootNodeLength / 2))
+            .attr("width", rootNodeLength)
+            .attr("height", 40)
         
-        simulationContent.current.simulationNodes = svg.append('svg:g')
-            .attr('id', 'buildNodeId')
-            .attr("stroke-linecap", "round")
-            .selectAll('g')
+        title.append('text')
+            .attr('fill', '#3CC89F')
+            .attr('x', -(rootNodeLength / 4 - 5))
+            .attr('y', 0)
+            .attr('font-weight', 'bold')
+            .attr('font-size', fontSize)
+            .text(rootName)
+    }
+
+    // 数据处理
+    const dealData = (container: any) => {
+        root = { 
+            up: d3.hierarchy(treeData.up), 
+            down: d3.hierarchy(treeData.down)
+        } 
+        direction.forEach((item: string) => {
+            root[item].x0 = width / 2  // 根节点x坐标
+            root[item].y0 = height / 2 // 根节点Y坐标
+            root[item].descendants().forEach((d: any) => {
+                d._children = d.children // 添加_children属性，用于实现点击收缩及展开功能
+                d.id = item + uuid() // 绑定唯一标识ID
+                collapse(d, item)
+            })
+            update(root[item], item, container)
+        })
+    }
+
+    // 开始绘图
+    const update = (source: any, direction: string, container: any) => {
+        const config = getTreeConfig()
+        const offsetX = -config.centralWidth
+        const dirRight = direction === 'down' ? 1 : -1 // 方向为右/左
+        const node_class = direction + 'Node'
+        const className = `${direction}gNode`
+        const tree: any = d3.tree().nodeSize([width, height]).separation((a: any,b: any) => {
+            return a.parrent == b.parrent ? .12 : .1
+        })
+        const rootData:any = tree(source)
+        const links = rootData.links() // 返回当前 node 的 links 数组, 其中每个 link 定义了 source父节点, target 子节点属性。
+        const nodes = rootData.descendants() // 返回后代节点数组，第一个节点为自身，然后依次为所有子节点的拓扑排序
+        console.log('nodes==', nodes)
+        nodes.forEach((d: any) => {
+            //左右2部分，设置以中心点为圆点(默认左上角为远点)
+            d.y = dirRight * (d.depth * config.linkLength) + config.centralHeight
+            d.x = d.x - offsetX
+            if (d.name == rootName) {
+                d.x = config.centralWidth
+                d.y += dirRight * 0 // 上下两树图根节点之间的距离
+            }
+        })
+
+        //根据class名称获取左或者右的g节点，达到分块更新
+        const node = container.selectAll('g.' + node_class).data(nodes, (d: any) => {
+            return d.id
+        })
+        
+        //新增节点，tree会根据数据内的children扩展相关节点
+        const nodeEnter = node.enter().append('g')
+            .attr('class', node_class)
+            .attr('id', (d: any) => { //给g元素添加id属性
+                return 'g' + d.id
+            })
+            .attr('transform', (d: any) => {
+                return `translate(${source.x0}, ${source.y0})`
+            })
+            .style('cursor', (d: any) => {
+                return (d.grade == rootName) ? '' : (d.children || d._children) ? 'pointer' : '';
+            })
+
+        nodeEnter.each((d: any) => {
+            if (d.depth > 0) { // 非根节点且无子节点
+                drawRect(d,  dirRight) // 画方框
+                drawText(d, dirRight) // 画文本
+                updateRectWidth(d)
+            }
+            if (d.depth > 0 && d.data.children) { // 非根节点且有子节点
+                const width = dirRight > 0 ? 75 : 15
+                drawCircle(d, direction, source, container) // 画圆圈
+                d3.select(`#g${d.id} g`).attr('transform', `translate(0, ${width})`) //修改圆圈属性
+            }
+        })
+
+        // 更新节点：节点enter和exit时都会触发tree更新
+        const nodeUpdate = node.merge(nodeEnter).transition().duration(duration)
+            .attr("transform", (d: any) => `translate(${d.x}, ${d.y - dirRight * rectMinWidth / 2})`)
+            .attr("fill-opacity", 1)
+            .attr("stroke-opacity", 1)
+
+        // 移除节点:tree移除掉数据内不包含的节点(即，children = false)
+        const nodeExit = node.exit().transition().duration(duration).remove()
+            .attr("transform", (d: any) => `translate(${source.x},${source.y})`)
+            .attr("fill-opacity", 0)
+            .attr("stroke-opacity", 0)
+        
+        // Update the links 根据 className来实现分块更新
+        const link = container.selectAll(`path.${className}`).data(links, (d: any) => d.target.id)
+        
+        // Enter any new links at the parent's previous position.
+        // insert是在g标签前面插入，防止连接线挡住G节点内容
+        const linkEnter = link.enter().insert("path", 'g')
+            .attr('class', className)
+            .attr("fill", 'none')
+            .attr("stroke-width", 2)
+            // .attr('stroke', '#fff')
+
+        // Transition links to their new position.
+        // link.merge(linkEnter).transition().duration(duration).attr("d", diagonal)
+        link.merge(linkEnter).transition().duration(duration).attr("d", (d: any) => {
+            return diagonal(d, dirRight)
+        })
+
+        // Transition exiting nodes to the parent's new position.
+        link.exit().transition().duration(duration).remove()
+            .attr("d", (d: any) => {
+                const o = { x: source.x, y: source.y }
+                return diagonal({ 
+                    source: o, 
+                    target: o,
+                }, dirRight)
+            })
+
+        // Stash the old positions for transition.
+        root[direction].eachBefore((d: any) => {
+            d.x0 = d.x
+            d.y0 = d.y
+        })
+    }
+
+    // 根据文本的内容动态设置rect矩形的宽度
+    const updateRectWidth = (node: any) => {
+        const id: string = `g${node.id}`
+        const textEl: any = document.getElementById(`text${id}`)
+        const textWidth = textEl.getBBox().width
+        d3.select(`#rect${id}`)
+            .attr('width', textWidth + 30)
+            .attr("x", -(textWidth / 2 + 15))
+        
+        d3.select(`#text${id}`)
+            .attr("x", -(textWidth / 2))    
+        
+    }
+
+    //画方框
+    const drawRect = (node: any, dirRight: number) => {
+        const id: string = `g${node.id}`
+        return d3.select(`#${id}`).append('rect')
+            .attr('class', (d: any) => {
+                if (node.depth === 1) {
+                    return 'oneDeep'
+                } else if (node.data.name === 'Expand All') {
+                    return 'expandAll'
+                } else if (node.data.children) {
+                    return 'childDeep'
+                } else {
+                    return 'noChildDeep' // "#2E3138" transparent
+                }
+            })
+            .attr('id', `rect${id}`)
+            .attr('y', textPadding + 20)
+            .attr("height", 40)
+            .attr('rx', 0)
+            .style('cursor', 'pointer')
+            .on("click", (event: any, d: any) => {
+                event.stopPropagation()
+                if (d.depth === 1 || d.data.children) {
+                    clickNode(d, 'cluster') // 节点点击事件
+                } else {
+                    if (d.data.name === 'Expand All') {
+                        clickNode(d, 'expandAll') // 节点点击事件
+                    } else {
+                        clickNode(d, 'address') // 节点点击事件
+                    }
+                }
+            })
+    }
+
+    //画文本
+    const drawText = (node: any, dirRight: number) => {
+        const id: string = `g${node.id}`
+        return d3.select(`#${id}`).append("text")
+            .attr('id', `text${id}`)
+            .attr('y', (textPadding + 44))
+            .attr('text-anchor', dirRight ? 'start' : 'end')
+            .style('font-size', rootNameFontSize)
+            .text((d: any) => {
+                if (d.data.children) {
+                    return formatStringToUppercase(d.data.name)
+                } else {
+                    if (d.data.name === 'Expand All') {
+                        return d.data.name
+                    } else {
+                        return `${d.data.name.substring(0, 3)}...${d.data.name.substring(d.data.name.length - 3)}`
+                    }
+                }
+            })
+            .style('cursor', 'pointer')
+            .on("click", (event: any, d: any) => {
+                event.stopPropagation()
+                if (d.depth === 1 || d.data.children) {
+                    clickNode(d, 'cluster') // 节点点击事件
+                } else {
+                    if (d.data.name === 'Expand All') {
+                        clickNode(d, 'expandAll') // 节点点击事件
+                    } else {
+                        clickNode(d, 'address') // 节点点击事件
+                    }
+                }
+            })
+    }
+
+    // 画circle
+    const drawCircle = (node: any, direction: string, source: any, container: any) => {
+        const id: string = `g${node.id}`
+
+        let gMark = d3.select(`#${id}`).append('g')
+            .attr('class', 'node-circle')
+            .attr("stroke", (d: any) => d.depth >= 1 ? '#4583FF' : '#fff')
+            .attr('stroke-width', 2)
+            .on('click', (d: any) => {
+                circleClick(d, direction, source, id, container)
+            })
+
+        gMark.append("circle")
+            .attr('fill', '#574F3B')
+            .attr("r", (d: any) => d.depth === 0 ? 0 : circleR) // 根节点不设置圆圈
+
+        let padding = circleR - 2
+        gMark.append('path')
+            .attr('class', 'pathCircle')
+            .attr('d', (d: any) => d.depth >= 1 ? 'M0,-6 V6 M-6,0 H6' : `m -${padding} 0 l ${2 * padding} 0`) //横线
+
+        gMark.append('path')//竖线，根据展开/收缩动态控制显示
+            .attr('class', 'pathCircle')
+            .attr('d', (d: any) => d.depth >= 1 ? 'M0,-6 V6 M-6,0 H6' : `m 0 -${padding} l 0 ${2 * padding}`)
+            .attr('stroke-width', 0)
+            .attr('class', 'node-circle-vertical')
+        return gMark
+    }
+
+    //画连接线
+    const diagonal = (obj: any, dirRight: number) => {
+        const s = obj.source
+        const t = obj.target
+        const myH = dirRight > 0 ? s.y : s.y + 50
+        const syH = dirRight > 0 ? (s.y + (t.y - s.y) / 2) : (s.y + (t.y - s.y) / 2)
+        const yH = dirRight > 0 ? t.y : t.y + 50
+        
+        return "M" + (s.x) + "," + myH + "L" + s.x + "," + syH + "L" + t.x + "," +
+        syH + "L" + (t.x) + "," + yH
+    }
+
+    const getTreeConfig = () => {
+        let treeConfig: any = {
+            'margin': {
+                'top': 10,
+                'right': 5,
+                'bottom': 0,
+                'left': 30
+            }
+        }
+        treeConfig.chartWidth = width
+        treeConfig.chartHeight = height
+        treeConfig.centralHeight = treeConfig.chartHeight / 2
+        treeConfig.centralWidth = treeConfig.chartWidth / 2
+        treeConfig.linkLength = 150
+        treeConfig.duration = 0 // 动画时间
+        return treeConfig
+    }
+
+    // 节点点击事件
+    const clickNode = (node: any, type: string) => {
+        console.log('clickNode node===', node)
+        props.showDetailInfo(node, type)
+    }
+
+    // 根据当前节点是否有children来判断是展开还是收缩，true收缩，false展开 //tree会根据节点内是否有children来向下扩展
+    const circleClick = (node: any, direction: string, source: any, id: string, container:any) => {
+        const __data__: any = node.srcElement.__data__
+        const data: any = __data__.data
+        console.log('__data__==', __data__)
+        console.log('data===', data)
+        if (!__data__._children && !__data__.children && !data.children ) {//无子节点
+            return
+        }
+        __data__.children = __data__.children ? null : __data__._children
+        
+        d3.select(`#${id} .node-circle`)
+            .attr('fill', __data__.children ? '#fff' : '#4583FF')
+            .attr('stroke', __data__.children ? '#fff' : '#4583FF')
+
+        d3.select(`#${id} .node-circle .pathCircle`)
+            .transition().duration(duration)
+            .attr('d', __data__.children ? 'm -6 0 l 12 0' : 'M0,-6 V6 M-6,0 H6')
+            
+        update(source, direction, container)
+    }
+
+    // 折叠跟节点的所有子节点
+    const collapse = (d: any, item: string) => {
+        if (d.children) {
+            d._children = []
+            d.children.forEach((item: any) => {
+                d._children.push(item)
+            })
+            d.id = item + uuid() // 绑定唯一标识ID
+            if (d.depth >= 1) {
+                d.children = null
+            }
+        }
     }
 
     // 为这个svg绑定缩放事件
@@ -481,248 +564,13 @@ const ComD3Force = (props: any) => {
                 .zoom() // 创建一个新的缩放行为
                 .scaleExtent([.1, 5]) // 限制缩放范围
                 .on("zoom", (d:any) => {
-                    svgContainer.select("#buildLineId") // #buildLineId, #buildNodeId
+                    svgContainer.selectAll("g") // #buildLineId, #buildNodeId
                         .attr(
                             "transform", // svg下的g标签移动大小
                             `translate(${d.transform.x},${d.transform.y})scale(${d.transform.k})`
-                        )
-                    svgContainer.select("#buildNodeId") // #buildLineId, #buildNodeId
-                        .attr(
-                            "transform", // svg下的g标签移动大小
-                            `translate(${d.transform.x},${d.transform.y})scale(${d.transform.k})`
-                        )    
+                        )  
                 })
         ).on('dblclick.zoom', null)
-    }
-
-    // 找出是否是双向边
-    const setLinkGroup = (arrLinks: any[]) => {
-        let linkGroup: any = {}
-        let resLinkList: any[] = updateLinks(arrLinks)
-        resLinkList.forEach((item: any, index: number) => {
-            if (!linkGroup.hasOwnProperty(item.key)) {
-                linkGroup[item.key] = []
-            }
-            linkGroup[item.key].push(item)
-        })
-
-        resLinkList.forEach((link: any) => {
-            let key: string = link.key
-            if (linkGroup[key].length > 1) {
-                link.isDualChannel = true // 双向边
-            }
-            if (link.target.address === defaultAddress) {
-                link.isFather = true
-            }
-        })
-        return resLinkList
-    }
-
-    // 给每个link添加key属性
-    const updateLinks = (links: any []): any[] => {
-        links.forEach((link: any) => {
-            const key = link.source < link.target ? link.source + ':' + link.target : link.target + ':' + link.source
-            link.key = key
-        })
-        return links
-    }
-
-    // 指时间间隔，隔一段时间刷新一次画面
-    const tickDraw = () => {
-        simulationContent.current.simulationLinks.attr('d', linkArc)
-            .attr('stroke', (link: any) => {
-                if (link.light) {
-                    return '#FDDD60'
-                } else {
-                    return '#979797'
-                }
-            })
-        simulationContent.current.simulationPashText.attr('d', pathTextArc)
-        simulationContent.current.simulationNodes.attr('transform', (d: any) => `translate(${d.x},${d.y})`)
-    }
-
-    // 渲染path
-    const linkArc = (d: any) => {
-        if (d.isDualChannel) {
-            const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y)
-            return `
-                M${d.source.x},${d.source.y}
-                A${r},${r} 0 0,1 ${d.target.x},${d.target.y}
-            `
-        } else {
-            const r = 0
-            return `
-                M${d.source.x},${d.source.y}
-                L${d.target.x},${d.target.y}
-            `
-        }
-    }
-
-    // M表示“Move to”(移动到)命令，A表示“Arc”(弧形)命令，L表示“Line”(直线)命令。
-    const pathTextArc = (d: any) => {
-        if (d.isDualChannel) {
-            const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y)
-            return `
-                M${d.source.x},${d.source.y - 6}
-                A${r},${r} 0 0,1 ${d.target.x},${d.target.y - 6}
-            `
-        } else {
-            return `
-                M${d.source.x},${d.source.y - 6}
-                L${d.target.x},${d.target.y - 6}
-            `
-        }
-    }
-
-    // 画箭头
-    const drawMarker = (links: any) => {
-        simulationContent.current.simulationSvg.append('svg:defs').selectAll("marker")
-            .data(links)
-            .join('marker')
-                .attr('id', (link: any) => {
-                    return `arrow-marker-${link.source.address}-${link.target.address}`
-                })
-                .attr('markerUnits', 'strokeWidth')
-                .attr('markerWidth', 12)
-                .attr('markerHeight', 12)
-                .attr('refX', 25)
-                .attr('refY', 6)
-                .attr('orient', 'auto')
-                .attr('viewBox', '0 0 12 12')
-            .append("svg:path")
-                .attr("d", "M2,2 L10,6 L2,10 L6,6 L2,2")
-                .attr('fill', (link: any) => {
-                    if (link.light) {
-                        return '#FDDD60'
-                    } else {
-                        return '#979797'
-                    }
-                })
-    }
-
-    // 画线
-    const drawSimulationLines = (links: any) => {
-        // 绑定数据,并得到update部分
-        const sLink: any = simulationContent.current.simulationLinks.data(links)
-        sLink.exit().remove()
-        const linkG: any = sLink.enter().append('svg:g')
-            .attr('id', (link: any) => {
-                return `g-${link.source.address}-${link.target.address}`
-            })
-        simulationContent.current.simulationLinks = linkG.append('svg:path')
-            .attr('class', 'line-path')
-            .attr('id', (link: any) => {
-                return `path-${link.source.address}-${link.target.address}`
-            })
-            .attr('stroke', '#979797')
-            .attr('fill', 'transparent')
-            .attr('stroke-linecap', 'round')
-            .attr("stroke-width", 2)
-            .attr('cursor', 'pointer')
-            .attr('marker-end', (link: any) => {
-                return `url(#arrow-marker-${link.source.address}-${link.target.address})`
-            })
-            .on('mouseover', (event: any, link: any) => {
-                event.stopPropagation()
-            })
-            .on('mouseleave', (event: any, link: any) => {
-                event.stopPropagation()
-            })
-            .on('click', (event: any, link: any) => {
-                event.stopPropagation()
-            })
-            .merge(simulationContent.current.simulationLinks)
-
-        simulationContent.current.simulationPashText = linkG.append('svg:path')
-            .attr('class', 'line-path')
-            .attr('id', (link: any) => {
-                return `pathText-${link.source.address}-${link.target.address}`
-            })
-            .attr('stroke', 'transparent')
-            .attr('fill', 'transparent')
-            .attr('stroke-linecap', 'round')
-            .attr("stroke-width", 2)
-            .attr('cursor', 'pointer')
-            .merge(simulationContent.current.simulationLinks)    
-
-        drawPathText(linkG)     
-    }
-
-    // 画节点
-    const drawSimulationNodes = (nodes: any) => {
-        const sNode :any = simulationContent.current.simulationNodes.data(nodes)
-        sNode.exit().remove()
-        const g = sNode.enter().append('svg:g')
-            .attr('class', 'nodeId')
-            .attr('id', (node: any) => {
-                return `id${node.address}`
-            })
-            .on("click", (event: any, node: any) => {
-                event.stopPropagation()
-            })
-            .on('mouseover', (node: any) => {
-            })
-            .on('mouseleave', (node: any) => {
-            })
-            .call(
-                d3
-                    .drag()
-                    .on("start", dragstarted)
-                    .on("drag", dragged)
-                    .on("end", dragended)
-            )
-        
-        g.append('svg:circle')
-            .attr('class', 'nodeCircle')
-            .attr('id', (node: any) => {
-                return 'circle' + node.address
-            })
-            .attr('fill', (node: any) => {
-                return colors[node.type].fill
-            })
-            .attr("stroke-width", (node: any) => {
-                if (node.type === 'high-risk') {
-                    return 12
-                } else if (node.address === defaultAddress) {
-                    return 10
-                } else {
-                    return 5
-                }
-            })
-            .attr('stroke', (node: any) => {
-                return colors[node.type].stroke
-            })
-            .attr("r", (node: any) => {
-                if (node.type === 'high-risk') {
-                    return 16
-                } else if (node.address === defaultAddress) {
-                    return 13
-                } else {
-                    return 9
-                }
-            })
-            .on('mouseover', (node: any) => {
-            })
-            .on('mouseleave', (node: any) => {
-            })
-            
-        g.append('svg:text')
-            .attr('x', '0')
-            .attr('y', '27')
-            .attr('fill', '#fff')
-            .attr('text-anchor', 'middle')
-            .style('font-size', '9rem')
-            .text((node: any) => {
-                if (node.tag) {
-                    return node.tag
-                } else if (node.type) {
-                    return node.type
-                } else {
-                    return ''
-                }
-            })
-            .attr('cursor', 'pointer')  
-        simulationContent.current.simulationNodes = g.merge(sNode)
     }
 
     // 边上添加文本
@@ -772,6 +620,11 @@ const ComD3Force = (props: any) => {
             })
     }
 
+    // 单击节点点击事件
+    const nodeClick = (node: any) => {
+        const address: string = node.address
+    }
+
     /**
      * 节点（开始）拖拽事件
     */
@@ -798,7 +651,7 @@ const ComD3Force = (props: any) => {
     }
 
     return (
-        <MainContent className='svg-content'>
+        <MainContent className='svg-tree-content'>
 
         </MainContent>
     )
