@@ -93,6 +93,26 @@ const ComMenu = () => {
                     icon: <AppstoreOutlined />,
                 }
             ],
+        },
+        {
+            key: '/web3',
+            label: 'WEB3',
+            icon: <SettingOutlined />,
+            children: [
+                { 
+                    key: '/wallet',
+                    label: (
+                        <RouteLink
+                            to='/wallet'
+                            normalIcon=''
+                            activeIcon=''
+                            title='wallet Connect'
+                            isShowIcon={false}
+                        />
+                    ), 
+                    icon: <AppstoreOutlined />,
+                }
+            ],
         }
     ]
 

@@ -9,6 +9,7 @@ import Home from '@/pages/home'
 import Pricing from '@/pages/pricing'
 import PageForce from '@/pages/d3/force'
 import PageTree from '@/pages/d3/tree'
+import PageWallet from '@/pages/web3/walletConnect'
 
 const AppContent = styled.div`
 	background-color: var(--child-05-color);
@@ -23,7 +24,7 @@ const MainContent = styled.div`
 const LayoutContent = styled.div`
 	flex: 1;
 	overflow-y: auto;
-	background-color: var(--child-06-color);
+	background-color: var(--child-05-color);
 `
 
 const App = () => {
@@ -43,7 +44,8 @@ const App = () => {
 							<Route path='/title1' element={<Home />}/>
 							<Route path='/title2-1' element={<Pricing />}/>
 							<Route path='/force' element={<PageForce />}/>
-							<Route path='/tree' element={<PageTree />}/>
+							<Route path='/tree' element={<PageTree />}/> 
+							<Route path='/wallet' element={<PageWallet />}/>
 						</Routes>
 					</LayoutContent>
 
